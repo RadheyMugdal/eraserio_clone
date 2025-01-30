@@ -15,18 +15,17 @@ datasource db {
 }
 
 model User {
-  id              String            @id @default(cuid())
-  name            String?
-  email           String            @unique
-  emailVerified   DateTime?
-  image           String?
-  accounts        Account[]
-  sessions        Session[]
+  id            String          @id @default(cuid())
+  name          String?
+  email         String          @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
   // Optional for WebAuthn support
-  Authenticator   Authenticator[]
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
-  TeamMemberships TeamMemberships[]
+  Authenticator Authenticator[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
 }
 
 model Account {
@@ -90,44 +89,19 @@ enum Role {
   GUEST
 }
 
-model Teams {
-  id               String            @id @default(uuid())
-  name             String
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
-  team_memberships TeamMemberships[]
-  folders          Folders[]
-}
-
-model TeamMemberships {
+model Workspaces {
   id        String   @id @default(uuid())
-  teamId    String
-  userId    String
-  role      Role     @default(MEMBER)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  team      Teams    @relation(fields: [teamId], references: [id], onDelete: Cascade)
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model Folders {
-  id             String    @id @unique @default(uuid())
-  name           String
-  parentFolderId String?
-  teamId         String
-  files          Files[]
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-  parentFolder   Folders?  @relation("ParentChild", fields: [parentFolderId], references: [id], onDelete: Cascade)
-  subFolders     Folders[] @relation("ParentChild")
-  team           Teams     @relation(fields: [teamId], references: [id], onDelete: Cascade)
-}
-
-model Files {
-  id        String   @id @unique @default(uuid())
-  folderId  String
   name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  folder    Folders  @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  files     Files[]
+}
+
+model Files {
+  id          String     @id @unique @default(uuid())
+  workspaceId String
+  name        String
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  folder      Workspaces @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
 }
