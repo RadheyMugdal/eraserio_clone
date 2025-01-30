@@ -1,30 +1,57 @@
-import { AppSidebar } from "@/components/dashboard/app-sidebar";
-import { NavActions } from "@/components/dashboard/nav-actions";
-
+import React from "react";
 import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Ellipsis, Folder } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-export default function Page() {
+const page = () => {
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset>
-        <header className="flex h-14 shrink-0 items-center gap-2">
-          <div className="flex flex-1 items-center gap-2 px-3">
-            <SidebarTrigger />
-          </div>
-          <div className="ml-auto px-3">
-            <NavActions />
-          </div>
-        </header>
-        <div className="flex flex-1 flex-col gap-4 px-4 py-10">
-          <div className="mx-auto h-24 w-full max-w-3xl rounded-xl bg-muted/50" />
-          <div className="mx-auto h-full w-full max-w-3xl rounded-xl bg-muted/50" />
-        </div>
-      </SidebarInset>
-    </SidebarProvider>
+    <div>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className=" w-12"></TableHead>
+            <TableHead className=" w-1/2">Name</TableHead>
+            <TableHead>Created</TableHead>
+            <TableHead>Edited</TableHead>
+            <TableHead>Author</TableHead>
+            <TableHead className=" w-12"></TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow className=" cursor-pointer">
+            <TableCell>
+              <Folder className=" w-4" />
+            </TableCell>
+            <TableCell className="font-medium">INV001</TableCell>
+            <TableCell>22 min ago</TableCell>
+            <TableCell>12 min ago</TableCell>
+            <TableCell>
+              <Avatar className=" text-xs">
+                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+            </TableCell>
+            <TableCell>
+              <button
+                type="button"
+                className="hover:bg-secondary p-1 rounded-md"
+              >
+                <Ellipsis className=" w-4 text-gray-400 hover:text-white" />
+              </button>
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </div>
   );
-}
+};
+
+export default page;
