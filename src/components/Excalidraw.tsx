@@ -3,7 +3,7 @@ import React from "react";
 import { Excalidraw, MainMenu } from "@excalidraw/excalidraw";
 const ExcalidrawComponent = () => {
   return (
-    <div style={{ height: "100%" }}>
+    <div style={{ height: "100%" }} className=" custom-styles">
       <Excalidraw
         initialData={{
           appState: {
