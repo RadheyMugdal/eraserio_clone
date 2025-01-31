@@ -13,17 +13,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
     <div>
       <SidebarProvider>
         <AppSidebar />
-        <SidebarInset>
-          <header className="flex  h-20  items-center gap-2">
-            <div className="flex flex-1 items-center gap-2 px-3">
-              <SidebarTrigger />
-            </div>
-            
-          </header>
-          <div className="flex flex-1 flex-col gap-4 px-4 py-10">
-            {children}
-          </div>
-        </SidebarInset>
+        <main className=" w-full h-full">{children}</main>
       </SidebarProvider>
     </div>
   );

@@ -4,11 +4,13 @@ import * as React from "react";
 import {
   AudioWaveform,
   Blocks,
+  Briefcase,
   Calendar,
   Command,
   Home,
   Inbox,
   MessageCircleQuestion,
+  Plus,
   Search,
   Settings2,
   Sparkles,
@@ -20,10 +22,13 @@ import { TeamSwitcher } from "@/components/dashboard/team-switcher";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { NavSecondary } from "./nav-secondary";
+import { Button } from "../ui/button";
+import { NavUser } from "./nav-user";
 
 // This is sample data.
 const data = {
@@ -99,12 +104,41 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar className="border-r-0" {...props}>
+    <Sidebar
+      className="border-r-0 h-full flex flex-col justify-between"
+      {...props}
+    >
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <h1 className=" flex text-2xl   gap-3 items-center font-bold">
+          <Briefcase />
+          ExcalText
+        </h1>
         <NavMain items={data.navMain} />
       </SidebarHeader>
       <SidebarRail />
+      <SidebarContent className=" p-2">
+        <p className=" text-xs ">WORKSPACES</p>
+        <div className=" w-full h-96 flex  gap-2 flex-col ">
+          <div className=" p-2 text-xs flex items-center gap-4   border hover:bg-secondary cursor-pointer">
+            <Briefcase className=" w-4 h-4" />
+            Workspace 1
+          </div>
+        </div>
+      </SidebarContent>
+      <SidebarFooter>
+        <div className=" w-full">
+          <Button className=" w-full">
+            <Plus className=" w-4 h-4" />
+            New Workspace
+          </Button>
+        </div>
+        <NavUser
+          user={{
+            name: "John Doe",
+            email: "john@doe.com",
+          }}
+        />
+      </SidebarFooter>
     </Sidebar>
   );
 }

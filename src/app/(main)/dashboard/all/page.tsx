@@ -1,55 +1,49 @@
-import React from "react";
+import { Ellipsis, File, Plus, Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Ellipsis, Folder } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import FileCard from "@/components/dashboard/FileCard";
 
 const page = () => {
   return (
-    <div>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className=" w-12"></TableHead>
-            <TableHead className=" w-1/2">Name</TableHead>
-            <TableHead>Created</TableHead>
-            <TableHead>Edited</TableHead>
-            <TableHead>Author</TableHead>
-            <TableHead className=" w-12"></TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <TableRow className=" cursor-pointer">
-            <TableCell>
-              <Folder className=" w-4" />
-            </TableCell>
-            <TableCell className="font-medium">INV001</TableCell>
-            <TableCell>22 min ago</TableCell>
-            <TableCell>12 min ago</TableCell>
-            <TableCell>
-              <Avatar className=" text-xs">
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-            </TableCell>
-            <TableCell>
-              <button
-                type="button"
-                className="hover:bg-secondary p-1 rounded-md"
-              >
-                <Ellipsis className=" w-4 text-gray-400 hover:text-white" />
-              </button>
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
+    <div className=" w-full flex flex-col h-full">
+      <div className=" flex p-4 gap-4 w-full items-center">
+        <div className=" flex  items-center gap-3">
+          <SidebarTrigger />
+          <h1 className=" text-xl ">Workspace 1</h1>
+        </div>
+        <button>
+          <Ellipsis className=" w-6 " />
+        </button>
+      </div>
+      <div className=" flex-1  p-4 space-y-6">
+        <div className=" flex w-full justify-between items-center">
+          <div className=" w-[25%] relative  bg-secondary rounded-md overflow-hidden ">
+            <Search className=" w-4 h-4 absolute top-1/2 left-3 -translate-y-1/2" />
+            <input
+              type="text"
+              name=""
+              placeholder="Search files.."
+              className=" bg-secondary w-full text-md p-2 ml-8 outline-none ring-0 "
+              id=""
+            />
+          </div>
+          <Button>
+            <Plus className=" w-4 h-4" />
+            Create new File
+          </Button>
+        </div>
+        <div className=" grid  grid-cols-[repeat(auto-fill,_minmax(300px,_1fr))] gap-4 ">
+          <FileCard />
+        </div>
+      </div>
     </div>
   );
 };
