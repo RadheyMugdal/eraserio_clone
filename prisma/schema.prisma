@@ -103,5 +103,7 @@ model Files {
   name        String
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
+  canvas_data Json? 
+  text_data   Json?
   folder      Workspaces @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
 }

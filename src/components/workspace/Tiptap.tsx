@@ -1,21 +1,7 @@
-import {
-  BubbleMenu,
-  EditorContent,
-  FloatingMenu,
-  useEditor,
-} from "@tiptap/react";
+import { BubbleMenu, EditorContent, useEditor } from "@tiptap/react";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
@@ -53,6 +39,8 @@ import clsx from "clsx";
 import Blockquote from "@tiptap/extension-blockquote";
 import { useState } from "react";
 import TextStyle from "@tiptap/extension-text-style";
+import Underline from "@tiptap/extension-underline";
+
 const Tiptap = () => {
   const [color, setColor] = useState("#FFFFFF");
   const lowlight = createLowlight(all);
@@ -61,6 +49,7 @@ const Tiptap = () => {
     TextStyle,
     Document,
     Paragraph,
+    Underline,
     TaskList,
     Text,
     TaskItem.configure({
@@ -86,15 +75,22 @@ const Tiptap = () => {
     editorProps: {
       attributes: {
         class:
-          "focus:outline-none prose dark:prose-invert prose-h1:text-3xl p-0  prose-p:space-y-0  ",
+          "focus:outline-none prose dark:prose-invert prose-h1:text-3xl p-0 prose-p:m-1 prose-h1:m-1 prose-h2:m-1 prose-h3:m-1 prose-h4:m-1 prose-span:m-1     ",
       },
+    },
+    onUpdate: ({ editor }) => {},
+    onCreate: ({ editor }) => {
+      editor.commands.focus("end");
     },
   });
   editor?.isActive("highlight", { color: "#ffa8a8" });
 
   return (
-    <div className="w-full h-full outline-none p-8 relative text- ">
-      <EditorContent editor={editor} className=" outline-none" />
+    <div className="w-full h-full  outline-none p-8 relative overflow-hidden ">
+      <EditorContent
+        editor={editor}
+        className=" outline-none space-y-0  w-[100%] h-[70vh]  overflow-scroll   "
+      />
       <BubbleMenu editor={editor}>
         <ToggleGroup
           type="multiple"
@@ -118,23 +114,23 @@ const Tiptap = () => {
           <ToggleGroupItem
             value="c"
             className=" text-white/70 hover:text-white "
-            onClick={() => editor?.chain().focus().toggleBold().run()}
+            onClick={() => editor?.chain().focus().toggleUnderline().run()}
           >
             <UnderlineIcon />
           </ToggleGroupItem>
         </ToggleGroup>
       </BubbleMenu>
-      <div className=" absolute m-auto bottom-4  border-2 rounded-md flex p-1">
+      <div className=" absolute m-auto bottom-4  border-2 rounded-md bg-secondary flex p-1">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <div className=" flex gap-0  hover:bg-secondary rounded-md items-center justify-center">
+            <div className=" flex gap-0  hover:bg-background rounded-md items-center justify-center">
               <Type className=" w-4 h-4 m-1" />
               <ChevronDown className=" w-3 h-3 my-auto" />
             </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent side="top" className=" flex   w-fit m-2 gap-2">
             <button
-              className={clsx(" p-1  hover:bg-secondary rounded-md ", {
+              className={clsx(" p-1  hover:bg-background rounded-md ", {
                 "bg-secondary": editor?.isActive("heading", { level: 1 }),
               })}
               onClick={() =>
@@ -144,7 +140,7 @@ const Tiptap = () => {
               <Heading1 className=" w-6 h-6" />
             </button>
             <button
-              className={clsx(" p-1  hover:bg-secondary rounded-md ", {
+              className={clsx(" p-1  hover:bg-background rounded-md ", {
                 "bg-secondary": editor?.isActive("heading", { level: 2 }),
               })}
               onClick={() =>
@@ -154,7 +150,7 @@ const Tiptap = () => {
               <Heading2 className=" w-6 h-6" />
             </button>
             <button
-              className={clsx(" p-1  hover:bg-secondary rounded-md ", {
+              className={clsx(" p-1  hover:bg-background rounded-md ", {
                 "bg-secondary": editor?.isActive("heading", { level: 3 }),
               })}
               onClick={() =>
@@ -164,7 +160,7 @@ const Tiptap = () => {
               <Heading3 className=" w-6 h-6" />
             </button>
             <button
-              className={clsx(" p-1  hover:bg-secondary rounded-md ", {
+              className={clsx(" p-1  hover:bg-background rounded-md ", {
                 "bg-secondary": editor?.isActive("heading", { level: 4 }),
               })}
               onClick={() =>
@@ -180,7 +176,7 @@ const Tiptap = () => {
           onClick={() => {
             editor?.chain().focus().toggleBulletList().run();
           }}
-          className=" p-1 cursor-pointer hover:bg-secondary rounded-md"
+          className=" p-1 cursor-pointer hover:bg-background rounded-md"
         >
           <List className=" w-5 h-5  " />
         </button>
@@ -188,7 +184,7 @@ const Tiptap = () => {
           onClick={() => {
             editor?.chain().focus().toggleOrderedList().run();
           }}
-          className=" p-1 cursor-pointer hover:bg-secondary rounded-md"
+          className=" p-1 cursor-pointer hover:bg-background rounded-md"
         >
           <ListOrdered className=" w-5 h-5  " />
         </button>
@@ -196,7 +192,7 @@ const Tiptap = () => {
           onClick={() => {
             editor?.chain().focus().toggleTaskList().run();
           }}
-          className=" p-1 cursor-pointer hover:bg-secondary rounded-md"
+          className=" p-1 cursor-pointer hover:bg-background rounded-md"
         >
           <SquareCheckBig className=" w-5 h-5 " />
         </button>
@@ -205,7 +201,7 @@ const Tiptap = () => {
           onClick={() => {
             editor?.chain().focus().toggleCodeBlock().run();
           }}
-          className=" p-1 cursor-pointer hover:bg-secondary rounded-md"
+          className=" p-1 cursor-pointer hover:bg-background rounded-md"
         >
           <Code className=" w-5 h-5   " />
         </button>
@@ -214,13 +210,13 @@ const Tiptap = () => {
           onClick={() => {
             editor?.chain().focus().toggleBlockquote().run();
           }}
-          className=" p-1 cursor-pointer hover:bg-secondary rounded-md"
+          className=" p-1 cursor-pointer hover:bg-background rounded-md"
         >
           <TextQuote className=" w-5 h-5   " />
         </button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <div className=" flex gap-0  hover:bg-secondary rounded-md items-center justify-center">
+            <div className=" flex gap-0  hover:bg-background rounded-md items-center justify-center">
               <Palette className=" w-4 h-4 m-1" />
             </div>
           </DropdownMenuTrigger>

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   ResizableHandle,
@@ -9,21 +9,23 @@ import {
 import ExcalidrawComponent from "@/components/Excalidraw";
 import dynamic from "next/dynamic";
 import Tiptap from "@/components/workspace/Tiptap";
-import { Edit, Ellipsis, File, Trash2 } from "lucide-react";
+import { Edit, Ellipsis } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
 let Editor = dynamic(() => import("@/components/workspace/Editor"), {
   ssr: false,
 });
+type ViewType = "Document" | "Both" | "Canvas";
 const page = () => {
-  const [content, setContent] = useState({});
+  const [view, setView] = useState<ViewType>("Both");
+  useEffect(() => {
+    console.log(view);
+  }, [view]);
   return (
     <main className=" w-screen flex flex-col  h-screen ">
       <header className=" flex p-4 border-b  justify-between  items-center">
@@ -42,7 +44,10 @@ const page = () => {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <Tabs defaultValue="Both" className="">
+        <Tabs
+          defaultValue={view}
+          onValueChange={(value) => setView(value as ViewType)}
+        >
           <TabsList>
             <TabsTrigger value="Document">Document</TabsTrigger>
             <TabsTrigger value="Both">Both</TabsTrigger>
@@ -53,17 +58,26 @@ const page = () => {
       </header>
       <div className=" flex-1">
         <ResizablePanelGroup direction="horizontal" className=" w-full">
-          <ResizablePanel defaultSize={40} minSize={30}>
-            <div className=" w-full h-full ">
-              <Tiptap />
-            </div>
-          </ResizablePanel>
-          <ResizableHandle />
-          <ResizablePanel defaultSize={60} minSize={30}>
-            <div className=" w-full h-full ">
-              <ExcalidrawComponent />
-            </div>
-          </ResizablePanel>
+          {view === "Document" || view === "Both" ? (
+            <>
+              <ResizablePanel defaultSize={40} minSize={30}>
+                <div className=" w-full h-full ">
+                  <Tiptap />
+                </div>
+              </ResizablePanel>
+              <ResizableHandle />
+            </>
+          ) : null}
+          {view === "Canvas" || view === "Both" ? (
+            <>
+              <ResizablePanel defaultSize={60} minSize={30}>
+                <div className=" w-full h-full ">
+                  <ExcalidrawComponent />
+                </div>
+              </ResizablePanel>
+              <ResizableHandle />
+            </>
+          ) : null}
         </ResizablePanelGroup>
       </div>
     </main>

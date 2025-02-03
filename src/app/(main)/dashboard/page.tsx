@@ -1,3 +1,4 @@
+"use client";
 import { Edit, Ellipsis, Plus, Search, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
@@ -19,10 +20,8 @@ const page = () => {
         </div>
 
         <DropdownMenu>
-          <DropdownMenuTrigger>
-            <button className=" flex items-center">
-              <Ellipsis className=" w-6 " />
-            </button>
+          <DropdownMenuTrigger className=" flex items-center">
+            <Ellipsis className=" w-6 " />
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem>

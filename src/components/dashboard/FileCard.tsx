@@ -21,10 +21,8 @@ const FileCard = () => {
         <CardDescription className=" flex items-center justify-between ">
           Updated about 2 sec ago
           <DropdownMenu>
-            <DropdownMenuTrigger>
-              <button className=" hover:bg-primary rounded-md  hover:text-primary-foreground px-1">
-                <Ellipsis />
-              </button>
+            <DropdownMenuTrigger className=" hover:bg-primary rounded-md  hover:text-primary-foreground px-1">
+              <Ellipsis />
             </DropdownMenuTrigger>
             <DropdownMenuContent className=" p-2">
               <DropdownMenuItem className=" cursor-pointer   flex items-center ">

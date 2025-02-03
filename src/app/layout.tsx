@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 import "./globals.css";
 import SessionWrapper from "@/components/global/session-wrapper";
 import { ThemeProvider } from "@/components/global/theme-provider";
+import { CustomQueryClientProvider } from "./providers";
+import { SessionProvider } from "next-auth/react";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -28,18 +30,22 @@ export default function RootLayout({
   return (
     <SessionWrapper>
       <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
+        <CustomQueryClientProvider>
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
           >
-            {children}
-          </ThemeProvider>
-        </body>
+            <SessionProvider>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="dark"
+                enableSystem
+                disableTransitionOnChange
+              >
+                {children}
+              </ThemeProvider>
+            </SessionProvider>
+          </body>
+        </CustomQueryClientProvider>
       </html>
     </SessionWrapper>
   );
