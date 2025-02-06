@@ -1,11 +1,11 @@
 "use client";
-
 import * as React from "react";
 import {
   AudioWaveform,
   Blocks,
   Briefcase,
   Calendar,
+  CircleDollarSign,
   Command,
   Home,
   Inbox,
@@ -18,15 +18,18 @@ import {
 } from "lucide-react";
 
 import { NavMain } from "@/components/dashboard/nav-main";
-import { TeamSwitcher } from "@/components/dashboard/team-switcher";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
   SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { NavSecondary } from "./nav-secondary";
 import { Button } from "../ui/button";
 import { NavUser } from "./nav-user";
 
@@ -116,7 +119,25 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={data.navMain} />
       </SidebarHeader>
       <SidebarRail />
-      <SidebarContent className=" p-2">
+      <SidebarContent className=" ">
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton>
+                  <Home className=" w-3 h-3" />
+                  Home
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton>
+                  <CircleDollarSign className=" w-3 h-3" />
+                  Pricing
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
         <p className=" text-xs ">WORKSPACES</p>
         <div className=" w-full h-96 flex  gap-2 flex-col ">
           <div className=" p-2 text-xs flex items-center gap-4   border hover:bg-secondary cursor-pointer">

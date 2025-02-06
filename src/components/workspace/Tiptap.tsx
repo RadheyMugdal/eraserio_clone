@@ -9,6 +9,7 @@ import StarterKit from "@tiptap/starter-kit";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import TaskItem from "@tiptap/extension-task-item";
 import { HexColorPicker } from "react-colorful";
+
 import {
   Bold,
   ChevronDown,
@@ -37,7 +38,7 @@ import { all, createLowlight } from "lowlight";
 import TaskList from "@tiptap/extension-task-list";
 import clsx from "clsx";
 import Blockquote from "@tiptap/extension-blockquote";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TextStyle from "@tiptap/extension-text-style";
 import Underline from "@tiptap/extension-underline";
 
@@ -66,7 +67,7 @@ const Tiptap = () => {
       placeholder: "Start typing...",
     }),
   ];
-  const content = `<h1>📂 Hello World!</h1>`;
+  const content = `<h1>Untitled file</h1> `;
   const editor = useEditor({
     extensions,
     content,
@@ -78,11 +79,17 @@ const Tiptap = () => {
           "focus:outline-none prose dark:prose-invert prose-h1:text-3xl p-0 prose-p:m-1 prose-h1:m-1 prose-h2:m-1 prose-h3:m-1 prose-h4:m-1 prose-span:m-1     ",
       },
     },
-    onUpdate: ({ editor }) => {},
     onCreate: ({ editor }) => {
       editor.commands.focus("end");
     },
   });
+  useEffect(() => {
+    if (!editor) return;
+    const saveTimeout = setTimeout(() => {
+      console.log(editor.getJSON());
+    }, 5000);
+    return () => clearTimeout(saveTimeout);
+  }, [editor?.getJSON()]);
   editor?.isActive("highlight", { color: "#ffa8a8" });
 
   return (
@@ -171,7 +178,7 @@ const Tiptap = () => {
             </button>
           </DropdownMenuContent>
         </DropdownMenu>
-        <span className=" mx-2 text-white/70">|</span>
+        <span className=" mx-2 text-foreground/60">|</span>
         <button
           onClick={() => {
             editor?.chain().focus().toggleBulletList().run();
@@ -196,7 +203,7 @@ const Tiptap = () => {
         >
           <SquareCheckBig className=" w-5 h-5 " />
         </button>
-        <span className=" mx-2 text-white/70">|</span>
+        <span className=" mx-2 text-foreground/60">|</span>
         <button
           onClick={() => {
             editor?.chain().focus().toggleCodeBlock().run();
@@ -205,7 +212,7 @@ const Tiptap = () => {
         >
           <Code className=" w-5 h-5   " />
         </button>
-        <span className=" mx-2 text-white/70">|</span>
+        <span className=" mx-2 text-foreground/60">|</span>
         <button
           onClick={() => {
             editor?.chain().focus().toggleBlockquote().run();

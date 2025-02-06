@@ -1,18 +1,15 @@
-import React from "react";
 import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { Edit, Ellipsis, File, Trash2 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
 const FileCard = () => {
   return (
-    <Card className=" bg-secondary  max-w-md">
+    <Card className=" bg-card  max-w-md border-2">
       <CardHeader>
         <CardTitle className=" text-lg flex gap-3 items-center">
           <File className=" w-4 h-4" />
