@@ -17,7 +17,6 @@ import {
   Trash2,
 } from "lucide-react";
 
-import { NavMain } from "@/components/dashboard/nav-main";
 import {
   Sidebar,
   SidebarContent,
@@ -32,6 +31,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Button } from "../ui/button";
 import { NavUser } from "./nav-user";
+import { Separator } from "../ui/separator";
 
 // This is sample data.
 const data = {
@@ -112,21 +112,27 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       {...props}
     >
       <SidebarHeader>
-        <h1 className=" flex text-2xl   gap-3 items-center font-bold">
+        <h1 className=" flex text-2xl justify-center   gap-3 items-center font-bold">
           <Briefcase />
           ExcalText
         </h1>
-        <NavMain items={data.navMain} />
       </SidebarHeader>
+      <Separator />
       <SidebarRail />
       <SidebarContent className=" ">
         <SidebarGroup>
-          <SidebarGroupContent>
-            <SidebarMenu>
+          <SidebarGroupContent className=" gap-0">
+            <SidebarMenu className=" mt-0">
               <SidebarMenuItem>
                 <SidebarMenuButton>
                   <Home className=" w-3 h-3" />
                   Home
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton>
+                  <Command className=" w-3 h-3" />
+                  Workspaces
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
@@ -138,13 +144,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-        <p className=" text-xs ">WORKSPACES</p>
-        <div className=" w-full h-96 flex  gap-2 flex-col ">
-          <div className=" p-2 text-xs flex items-center gap-4   border hover:bg-secondary cursor-pointer">
-            <Briefcase className=" w-4 h-4" />
-            Workspace 1
-          </div>
-        </div>
       </SidebarContent>
       <SidebarFooter>
         <div className=" w-full">

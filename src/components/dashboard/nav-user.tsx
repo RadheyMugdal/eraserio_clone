@@ -18,7 +18,6 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 
-import { useRouter } from "next/navigation";
 import { useGetUser } from "@/hooks/user/useGetUser";
 import { Skeleton } from "../ui/skeleton";
 import { signOut } from "@/auth";

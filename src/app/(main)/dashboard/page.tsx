@@ -1,5 +1,15 @@
 "use client";
-import { Edit, Ellipsis, Plus, Search, Trash2 } from "lucide-react";
+import {
+  ChevronDown,
+  Command,
+  Edit,
+  Ellipsis,
+  Plus,
+  Search,
+  Settings2,
+  SquarePlus,
+  Trash2,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import FileCard from "@/components/dashboard/FileCard";
@@ -9,6 +19,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Separator } from "@/components/ui/separator";
 
 const page = () => {
   return (
@@ -16,7 +32,56 @@ const page = () => {
       <div className=" flex p-4 gap-4 w-full items-center">
         <div className=" flex  items-center gap-3">
           <SidebarTrigger />
-          <h1 className=" text-xl ">Workspace 1</h1>
+          <Popover>
+            <PopoverTrigger className=" flex gap-2 items-center bg-secondary  p-1 rounded-md">
+              Workspace
+              <ChevronDown />
+            </PopoverTrigger>
+            <PopoverContent className=" p-1 m-2 max-w-56  ">
+              <div className="  text-xs flex flex-col gap-2 max-h-56 ">
+                <div className=" w-full h-[70%] flex flex-col gap-2 overflow-y-scroll">
+                  <button className=" w-full hover:bg-secondary p-2 rounded-md flex gap-2 items-center">
+                    <Command className=" w-4 h-4 " />
+                    Persional Workspace
+                  </button>
+                  <button className=" w-full hover:bg-secondary p-2 rounded-md flex gap-2 items-center">
+                    <Command className=" w-4 h-4 " />
+                    Persional Workspace
+                  </button>
+                  <button className=" w-full hover:bg-secondary p-2 rounded-md flex gap-2 items-center">
+                    <Command className=" w-4 h-4 " />
+                    Persional Workspace
+                  </button>
+
+                  <button className=" w-full hover:bg-secondary p-2 rounded-md flex gap-2 items-center">
+                    <Command className=" w-4 h-4 " />
+                    Persional Workspace
+                  </button>
+                  <button className=" w-full hover:bg-secondary p-2 rounded-md flex gap-2 items-center">
+                    <Command className=" w-4 h-4 " />
+                    Persional Workspace
+                  </button>
+                  <button className=" w-full hover:bg-secondary p-2 rounded-md flex gap-2 items-center">
+                    <Command className=" w-4 h-4 " />
+                    Persional Workspace
+                  </button>
+                  <button className=" w-full hover:bg-secondary p-2 rounded-md flex gap-2 items-center">
+                    <Command className=" w-4 h-4 " />
+                    Persional Workspace
+                  </button>
+                </div>
+                <Separator />
+                <button className=" flex items-center justify-center gap-2 border p-2 rounded-md hover:bg-secondary">
+                  <Settings2 className=" w-4 h-4" />
+                  Manage workspaces
+                </button>
+                <button className=" flex items-center justify-center gap-2 border p-2 rounded-md hover:bg-secondary">
+                  <SquarePlus className=" w-4 h-4" />
+                  Create new Workspace
+                </button>
+              </div>
+            </PopoverContent>
+          </Popover>
         </div>
 
         <DropdownMenu>

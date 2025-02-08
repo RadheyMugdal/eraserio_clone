@@ -20,9 +20,10 @@ const ExcalidrawComponent = () => {
         initialData={{
           appState: {
             viewBackgroundColor: "#0A0A0A",
-            currentItemStrokeColor: "#FFFFFF",
+            currentItemStrokeColor: "#ffffff",
           },
         }}
+        theme="dark"
         onChange={(excalidrawElements, appState, files) => {
           setWhiteBoardData(excalidrawElements);
         }}
