@@ -1,21 +1,6 @@
 "use client";
 import * as React from "react";
-import {
-  AudioWaveform,
-  Blocks,
-  Briefcase,
-  Calendar,
-  CircleDollarSign,
-  Command,
-  Home,
-  Inbox,
-  MessageCircleQuestion,
-  Plus,
-  Search,
-  Settings2,
-  Sparkles,
-  Trash2,
-} from "lucide-react";
+import { Briefcase, Command, Home, Plus } from "lucide-react";
 
 import {
   Sidebar,
@@ -32,80 +17,30 @@ import {
 import { Button } from "../ui/button";
 import { NavUser } from "./nav-user";
 import { Separator } from "../ui/separator";
+import { Progress } from "@/components/ui/progress";
+import { usePathname, useRouter } from "next/navigation";
+import clsx from "clsx";
+import Link from "next/link";
 
 // This is sample data.
-const data = {
-  teams: [
-    {
-      name: "Acme Inc",
-      logo: Command,
-      plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
-    },
-  ],
-  navMain: [
-    {
-      title: "Search",
-      url: "#",
-      icon: Search,
-    },
-    {
-      title: "Ask AI",
-      url: "#",
-      icon: Sparkles,
-    },
-    {
-      title: "Home",
-      url: "#",
-      icon: Home,
-      isActive: true,
-    },
-    {
-      title: "Inbox",
-      url: "#",
-      icon: Inbox,
-      badge: "10",
-    },
-  ],
-  navSecondary: [
-    {
-      title: "Calendar",
-      url: "#",
-      icon: Calendar,
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-    },
-    {
-      title: "Templates",
-      url: "#",
-      icon: Blocks,
-    },
-    {
-      title: "Trash",
-      url: "#",
-      icon: Trash2,
-    },
-    {
-      title: "Help",
-      url: "#",
-      icon: MessageCircleQuestion,
-    },
-  ],
-};
+const data = [
+  {
+    title: "Home",
+    route: "/dashboard",
+    id: "Home",
+    icon: Home,
+  },
+  {
+    title: "Workspaces",
+    route: "/dashboard/workspaces",
+    id: "Workspaces",
+    icon: Command,
+  },
+];
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const pathname = usePathname();
+  const router = useRouter();
   return (
     <Sidebar
       className="border-r-0 h-full flex flex-col justify-between"
@@ -123,29 +58,39 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarGroup>
           <SidebarGroupContent className=" gap-0">
             <SidebarMenu className=" mt-0">
-              <SidebarMenuItem>
-                <SidebarMenuButton>
-                  <Home className=" w-3 h-3" />
-                  Home
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton>
-                  <Command className=" w-3 h-3" />
-                  Workspaces
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton>
-                  <CircleDollarSign className=" w-3 h-3" />
-                  Pricing
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+              {data.map((item) => (
+                <Link href={item.route} key={item.id}>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton
+                      className={clsx("", {
+                        " bg-sidebar-accent": pathname === item.route,
+                      })}
+                      onClick={() => {
+                        router.push(item.route);
+                      }}
+                    >
+                      <item.icon className=" w-3 h-3" />
+                      {item.title}
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </Link>
+              ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
+        <div className=" rounded-md bg-secondary p-2  mb-8 flex flex-col gap-4">
+          <p className=" text-xs font-bold">ExcalText Free Tier</p>
+          <div>
+            <Progress value={5} max={10} />
+            <span className=" text-xs">5/10 files created</span>
+          </div>
+          <p className=" text-xs">
+            Upgrade your plan for unlimited files and workspaces.
+          </p>
+          <Button size={"sm"}>Upgrade</Button>
+        </div>
         <div className=" w-full">
           <Button className=" w-full">
             <Plus className=" w-4 h-4" />
