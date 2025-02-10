@@ -1,7 +1,6 @@
 "use client";
-import { Edit, Ellipsis, Plus, Search, Trash2 } from "lucide-react";
+import { Command, Edit, Ellipsis, Plus, Search, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { SidebarTrigger } from "@/components/ui/sidebar";
 import FileCard from "@/components/dashboard/FileCard";
 import {
   DropdownMenu,
@@ -9,21 +8,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useGetRecentFile } from "@/hooks/files/useGetRecentFile";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 const page = () => {
-  const { data, isLoading } = useGetRecentFile();
-  if (isLoading) {
-    return <div className=" flex items-center justify-center ">Loading</div>;
-  }
-  console.log(data);
-
   return (
     <div className=" w-full flex flex-col h-full">
       <div className=" flex p-4 gap-4 w-full items-center">
+        <SidebarTrigger />
         <div className=" flex  items-center gap-3">
-          <SidebarTrigger />
-          <h1>Recent files</h1>
+          <Command className=" w-4 h-4" />
+          <h1>Workspace 1</h1>
         </div>
 
         <DropdownMenu>
