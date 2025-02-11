@@ -6,17 +6,24 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import type { Files } from "@prisma/client";
+import { formatDistanceToNow } from "date-fns";
 
-const FileCard = () => {
+interface FileCardProps {
+  file: Files;
+}
+
+const FileCard: React.FC<FileCardProps> = ({ file }) => {
+  const lastEdited = formatDistanceToNow(new Date(file.updatedAt));
   return (
     <Card className=" bg-card  max-w-md border-2">
       <CardHeader>
         <CardTitle className=" text-lg flex gap-3 items-center">
           <File className=" w-4 h-4" />
-          Untitled File
+          {file.name}
         </CardTitle>
         <CardDescription className=" flex items-center justify-between ">
-          Updated about 2 sec ago
+          Updated about{lastEdited} ago
           <DropdownMenu>
             <DropdownMenuTrigger className=" hover:bg-primary rounded-md  hover:text-primary-foreground px-1">
               <Ellipsis />

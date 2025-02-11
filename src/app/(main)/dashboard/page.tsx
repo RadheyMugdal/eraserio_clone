@@ -10,14 +10,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useGetRecentFile } from "@/hooks/files/useGetRecentFile";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useState } from "react";
 
 const page = () => {
-  const { data, isLoading } = useGetRecentFile();
-  if (isLoading) {
-    return <div className=" flex items-center justify-center ">Loading</div>;
-  }
-  console.log(data);
-
+  const [filename, setFilename] = useState("");
+  const { data, isLoading } = useGetRecentFile(filename);
   return (
     <div className=" w-full flex flex-col h-full">
       <div className=" flex p-4 gap-4 w-full items-center">
@@ -49,6 +47,8 @@ const page = () => {
               name=""
               placeholder="Search files.."
               className=" bg-secondary w-full text-md p-2 ml-8 outline-none ring-0 "
+              value={filename}
+              onChange={(e) => setFilename(e.target.value)}
               id=""
             />
           </div>
@@ -57,9 +57,28 @@ const page = () => {
             Create new File
           </Button>
         </div>
-        <div className=" grid  grid-cols-[repeat(auto-fill,_minmax(300px,_1fr))] gap-4 ">
-          <FileCard />
-        </div>
+        {isLoading ? (
+          <div className=" grid  grid-cols-[repeat(auto-fill,_minmax(300px,_1fr))] gap-4  ">
+            <Skeleton className="  h-28  rounded-md " />
+            <Skeleton className="  h-28  rounded-md " />
+            <Skeleton className=" h-28   rounded-md " />
+            <Skeleton className="   h-28  rounded-md" />
+            <Skeleton className=" h-28   rounded-md " />
+            <Skeleton className="   h-28  rounded-md" />
+            <Skeleton className=" h-28   rounded-md " />
+            <Skeleton className="   h-28  rounded-md" />
+            <Skeleton className=" h-28   rounded-md " />
+            <Skeleton className="   h-28  rounded-md" />
+            <Skeleton className=" h-28   rounded-md " />
+            <Skeleton className="   h-28  rounded-md" />
+          </div>
+        ) : (
+          <div className=" grid  grid-cols-[repeat(auto-fill,_minmax(300px,_1fr))] gap-4 ">
+            {data
+              ? Array.from(data).map((file) => <FileCard file={file} />)
+              : null}
+          </div>
+        )}
       </div>
     </div>
   );

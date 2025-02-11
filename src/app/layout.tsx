@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import SessionWrapper from "@/components/global/session-wrapper";
 import { ThemeProvider } from "@/components/global/theme-provider";
 import { CustomQueryClientProvider } from "./providers";
 import { SessionProvider } from "next-auth/react";
@@ -30,23 +29,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <SessionWrapper>
-      <html lang="en">
-        <CustomQueryClientProvider>
-          <body className={` ${inter.className} antialiased`}>
-            <SessionProvider>
-              <ThemeProvider
-                attribute="class"
-                defaultTheme="dark"
-                enableSystem
-                disableTransitionOnChange
-              >
-                {children}
-              </ThemeProvider>
-            </SessionProvider>
-          </body>
-        </CustomQueryClientProvider>
-      </html>
-    </SessionWrapper>
+    <html lang="en">
+      <CustomQueryClientProvider>
+        <body className={` ${inter.className} antialiased`}>
+          <SessionProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="dark"
+              enableSystem
+              disableTransitionOnChange
+            >
+              {children}
+            </ThemeProvider>
+          </SessionProvider>
+        </body>
+      </CustomQueryClientProvider>
+    </html>
   );
 }

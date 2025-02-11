@@ -1,22 +1,15 @@
-import { PrismaClient } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
-import { getSession } from "next-auth/react";
-
-export const useGetRecentFile = () => {
-  return useQuery({
-    queryKey: ["files"],
+import type { Files } from "@prisma/client";
+import axios from "axios";
+export const useGetRecentFile = (filename: string) => {
+  return useQuery<Files[]>({
+    queryKey: ["files", filename],
     queryFn: async () => {
-      const session = await getSession();
-      if (!session) {
-        throw new Error("Could not find session");
+      const res = await axios.post(`/api/files?filename=${filename}`);
+      if (res.status !== 200) {
+        throw new Error("Failed to get recent files");
       }
-      const prisma = new PrismaClient();
-      const data = await prisma.files.findMany({
-        where: {
-          user_id: session.user?.id,
-        },
-      });
-      return data;
+      return res.data;
     },
   });
 };
