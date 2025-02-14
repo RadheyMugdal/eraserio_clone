@@ -1,7 +1,6 @@
 "use client";
 import { Command, Edit, Ellipsis, Plus, Search, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import FileCard from "@/components/dashboard/FileCard";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,15 +8,21 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { useGetWorkspaceData } from "@/hooks/workspaces/useGetWorkspaceData";
+import { useParams } from "next/navigation";
+import FileCard from "@/components/dashboard/FileCard";
 
 const page = () => {
+  const id = useParams().id;
+  const { data, isLoading } = useGetWorkspaceData(id as string);
+  if (isLoading) return null;
   return (
     <div className=" w-full flex flex-col h-full">
       <div className=" flex p-4 gap-4 w-full items-center">
         <SidebarTrigger />
         <div className=" flex  items-center gap-3">
           <Command className=" w-4 h-4" />
-          <h1>Workspace 1</h1>
+          <h1>{data.name}</h1>
         </div>
 
         <DropdownMenu>
@@ -52,7 +57,9 @@ const page = () => {
           </Button>
         </div>
         <div className=" grid  grid-cols-[repeat(auto-fill,_minmax(300px,_1fr))] gap-4 ">
-          <FileCard />
+          {data.files.map((file: any) => (
+            <FileCard file={file} />
+          ))}
         </div>
       </div>
     </div>

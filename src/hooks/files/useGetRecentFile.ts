@@ -5,11 +5,13 @@ export const useGetRecentFile = (filename: string) => {
   return useQuery<Files[]>({
     queryKey: ["files", filename],
     queryFn: async () => {
-      const res = await axios.post(`/api/files?filename=${filename}`);
+      const res = await axios.get(`/api/file?filename=${filename}`);
+      console.log(res);
+
       if (res.status !== 200) {
         throw new Error("Failed to get recent files");
       }
-      return res.data;
+      return res.data.files;
     },
   });
 };

@@ -108,7 +108,7 @@ model Files {
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
   canvas_data Json?
-  text_data   Json?
+  text_data   String     @default("")
   user_id     String
   Workspaces  Workspaces @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   User        User       @relation(fields: [user_id], references: [id], onDelete: Cascade)

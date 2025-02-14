@@ -21,7 +21,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
     const workspace = await prisma.workspaces.create({
       data: {
         name,
-        // userId:session.user.id
+        userId: session.user.id as string,
       },
     });
 
@@ -37,6 +37,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
 export async function GET(req: NextRequest, res: NextResponse) {
   try {
+    const name = req.nextUrl.searchParams.get("name");
     const session = await auth();
     if (!session?.user) {
       return NextResponse.json(
@@ -44,12 +45,50 @@ export async function GET(req: NextRequest, res: NextResponse) {
         { status: 401 }
       );
     }
-    const workspaces = await prisma.workspaces.findMany({
-      where: {
-        // userId:session.user.id
-      },
-    });
-    return NextResponse.json({ workspaces }, { status: 200 });
+
+    if (name) {
+      const workspaces = await prisma.workspaces.findMany({
+        where: {
+          userId: session.user.id,
+        },
+        select: {
+          id: true,
+          name: true,
+          createdAt: true,
+          updatedAt: true,
+          user: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      });
+      return NextResponse.json({ workspaces }, { status: 200 });
+    } else {
+      const workspaces = await prisma.workspaces.findMany({
+        where: {
+          userId: session.user.id,
+          name: {
+            contains: name as string,
+          },
+        },
+        orderBy: {
+          updatedAt: "desc",
+        },
+        select: {
+          id: true,
+          name: true,
+          createdAt: true,
+          updatedAt: true,
+          user: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      });
+      return NextResponse.json({ workspaces }, { status: 200 });
+    }
   } catch (error) {
     console.error(error);
     return NextResponse.json(

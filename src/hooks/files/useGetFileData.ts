@@ -9,7 +9,7 @@ export const useGetFileData = (id: string) => {
       if (res.status !== 200) {
         throw new Error("Failed to get file");
       }
-      return res.data;
+      return res.data.file;
     },
   });
 };

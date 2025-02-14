@@ -11,7 +11,7 @@ export const useUpdateFileData = () => {
       id: string;
       data: {
         canvas_data?: JSON;
-        text_data?: JSON;
+        text_data?: string;
         name?: string;
       };
     }) => {

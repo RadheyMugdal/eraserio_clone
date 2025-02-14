@@ -1,21 +1,51 @@
 "use client";
-import { Edit, Ellipsis, Plus, Search, Trash2 } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import FileCard from "@/components/dashboard/FileCard";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+
 import { useGetRecentFile } from "@/hooks/files/useGetRecentFile";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useState } from "react";
+import { useCreateFile } from "@/hooks/files/useCreateFile";
+import { useGetWorkspaces } from "@/hooks/workspaces/useGetWorkspaces";
+import CreateNewWorkspaceModal from "@/components/dashboard/modals/CreateNewWorkspaceModal";
+import CreateNewFileModal from "@/components/dashboard/modals/CreateNewFileModal";
+import RenameFileModal from "@/components/dashboard/modals/RenameFileModal";
+import DeleteFileModal from "@/components/dashboard/modals/DeleteFileModal";
 
 const page = () => {
   const [filename, setFilename] = useState("");
   const { data, isLoading } = useGetRecentFile(filename);
+  const [openCreateNewFileDialog, setOpenCreateNewFileDialog] = useState(false);
+  const [openRenameFileDialog, setOpenRenameFileDialog] = useState(false);
+  const [openDeleteFileDialog, setOpenDeleteFileDialog] = useState(false);
+  const [selectedFileId, setSelectedFileId] = useState<string>("");
+  const {
+    data: workspacesData,
+    isLoading: workspacesIsLoading,
+    error,
+  } = useGetWorkspaces();
+  useGetWorkspaces();
+  const [openCreateWorkspaceDialog, setOpenCreateWorkspaceDialog] =
+    useState(false);
+  const createNewFileMutate = useCreateFile();
+  const handleCreateNewFile = () => {
+    setOpenCreateNewFileDialog(true);
+  };
+  const handleCreateNewWorkspace = () => {
+    setOpenCreateWorkspaceDialog(true);
+  };
+  const handleRenameFile = (id: string) => {
+    if (!id) return;
+    setSelectedFileId(id);
+    setOpenRenameFileDialog(true);
+  };
+  const handleDeleteFile = (id: string) => {
+    if (!id) return;
+    setSelectedFileId(id);
+    setOpenDeleteFileDialog(true);
+  };
   return (
     <div className=" w-full flex flex-col h-full">
       <div className=" flex p-4 gap-4 w-full items-center">
@@ -23,22 +53,8 @@ const page = () => {
           <SidebarTrigger />
           <h1>Recent files</h1>
         </div>
-
-        <DropdownMenu>
-          <DropdownMenuTrigger className=" flex items-center">
-            <Ellipsis className=" w-6 " />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem>
-              <Edit /> Rename workspace
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Trash2 /> Delete workspace
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
       </div>
-      <div className=" flex-1  p-4 space-y-6">
+      <div className=" flex-1   p-4 space-y-6">
         <div className=" flex w-full justify-between items-center">
           <div className=" w-[25%] relative  bg-secondary rounded-md overflow-hidden ">
             <Search className=" w-4 h-4 absolute top-1/2 left-3 -translate-y-1/2" />
@@ -52,7 +68,7 @@ const page = () => {
               id=""
             />
           </div>
-          <Button>
+          <Button onClick={handleCreateNewFile} disabled={!workspacesData}>
             <Plus className=" w-4 h-4" />
             Create new File
           </Button>
@@ -73,13 +89,53 @@ const page = () => {
             <Skeleton className="   h-28  rounded-md" />
           </div>
         ) : (
-          <div className=" grid  grid-cols-[repeat(auto-fill,_minmax(300px,_1fr))] gap-4 ">
-            {data
-              ? Array.from(data).map((file) => <FileCard file={file} />)
-              : null}
+          <div className="w-full h-full ">
+            {data?.length !== 0 ? (
+              <div className=" grid  grid-cols-[repeat(auto-fill,_minmax(300px,_1fr))] gap-4 ">
+                {data?.map((file) => (
+                  <FileCard
+                    file={file}
+                    handleRenameFile={handleRenameFile}
+                    handleDeleteFile={handleDeleteFile}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className=" w-full h-full flex items-center justify-center flex-col ">
+                <div className=" mb-12 flex items-center justify-center flex-col  gap-4">
+                  <p className=" text-foreground/60 italic">
+                    {" "}
+                    There are no files available. Click the button below to
+                    create a new one.{" "}
+                  </p>
+                  <Button onClick={handleCreateNewFile}>Create new file</Button>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>
+      <CreateNewFileModal
+        handleCreateNewWorkspace={handleCreateNewWorkspace}
+        openCreateNewFileDialog={openCreateNewFileDialog}
+        setOpenCreateNewFileDialog={setOpenCreateNewFileDialog}
+        workspaces={workspacesData}
+        isWorkspaceLoading={workspacesIsLoading}
+      />
+      <CreateNewWorkspaceModal
+        openCreateWorkspaceDialog={openCreateWorkspaceDialog}
+        setOpenCreateWorkspaceDialog={setOpenCreateWorkspaceDialog}
+      />
+      <RenameFileModal
+        openRenameFileDialog={openRenameFileDialog}
+        setRenameFileDialog={setOpenRenameFileDialog}
+        id={selectedFileId}
+      />
+      <DeleteFileModal
+        openDeleteFileDialog={openDeleteFileDialog}
+        setOpenDeleteFileDialog={setOpenDeleteFileDialog}
+        id={selectedFileId}
+      />
     </div>
   );
 };

@@ -25,3 +25,32 @@ export async function GET(req: NextRequest, res: NextResponse) {
     return NextResponse.json({ error: error }, { status: 500 });
   }
 }
+
+export async function POST(req: NextRequest, res: NextResponse) {
+  try {
+    const session = await auth();
+    if (!session?.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    const { name, workspaceId } = await req.json();
+    if (!name || !workspaceId) {
+      return NextResponse.json(
+        { error: "Name and workspaceId are required" },
+        {
+          status: 400,
+        }
+      );
+    }
+    const files = await prisma.files.create({
+      data: {
+        name: name,
+        user_id: session.user.id as string,
+        workspaceId,
+      },
+    });
+    return NextResponse.json({ files }, { status: 200 });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: error }, { status: 500 });
+  }
+}

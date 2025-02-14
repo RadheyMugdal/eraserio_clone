@@ -1,6 +1,10 @@
 "use client";
 import { Excalidraw, MainMenu, WelcomeScreen } from "@excalidraw/excalidraw";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+interface ExcalidrawComponentProp {
+  canvasData: JSON;
+  setCanvasData: React.Dispatch<React.SetStateAction<JSON>>;
+}
 const ExcalidrawComponent = () => {
   const primaryColor = getComputedStyle(document.documentElement)
     .getPropertyValue("--color-primary")

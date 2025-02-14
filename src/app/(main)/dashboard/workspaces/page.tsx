@@ -1,7 +1,7 @@
+"use client";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -10,13 +10,22 @@ import {
 import { Command, Search, Trash } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { formatDistanceToNow } from "date-fns";
+import {
+  useGetWorkspaces,
+  WorkspaceResponse,
+} from "@/hooks/workspaces/useGetWorkspaces";
+import { useRouter } from "next/navigation";
 
 const page = () => {
+  const { data: workspaces, isLoading } = useGetWorkspaces();
+  const router = useRouter();
+
+  if (isLoading) return null;
   return (
     <main className=" p-2">
       <h1 className=" flex text-xl   gap-3 items-center font-bold">
         <SidebarTrigger />
-        {/* <Command /> */}
         Workspaces
       </h1>
       <div className=" p-4">
@@ -37,7 +46,6 @@ const page = () => {
         </div>
         <div className=" p-4">
           <Table>
-            <TableCaption>A list of your recent invoices.</TableCaption>
             <TableHeader>
               <TableRow>
                 <TableHead className=" w-[50px]"></TableHead>
@@ -49,18 +57,29 @@ const page = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              <TableRow>
-                <TableCell>
-                  <Checkbox />
-                </TableCell>
-                <TableCell className="font-medium">
-                  <Command />
-                </TableCell>
-                <TableCell>Paid</TableCell>
-                <TableCell>Credit Card</TableCell>
-                <TableCell>Credit Card</TableCell>
-                <TableCell>Credit Card</TableCell>
-              </TableRow>
+              {workspaces?.map((workspace: WorkspaceResponse) => (
+                <TableRow
+                  className=" cursor-pointer"
+                  onClick={() => {
+                    router.push(`/dashboard/workspaces/${workspace.id}`);
+                  }}
+                >
+                  <TableCell>
+                    <Checkbox />
+                  </TableCell>
+                  <TableCell className="font-medium">
+                    <Command />
+                  </TableCell>
+                  <TableCell>{workspace.name}</TableCell>
+                  <TableCell>{workspace.user.name}</TableCell>
+                  <TableCell>
+                    {formatDistanceToNow(new Date(workspace.createdAt))}
+                  </TableCell>
+                  <TableCell>
+                    {formatDistanceToNow(new Date(workspace.updatedAt))}
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </div>

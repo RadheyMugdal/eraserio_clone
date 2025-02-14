@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  res: NextResponse,
   { params }: { params: { id: string } }
 ) {
   try {
@@ -37,7 +36,6 @@ export async function GET(
 
 export async function DELETE(
   req: NextRequest,
-  res: NextResponse,
   { params }: { params: { id: string } }
 ) {
   try {
@@ -70,7 +68,6 @@ export async function DELETE(
 
 export async function PATCH(
   req: NextRequest,
-  res: NextResponse,
   { params }: { params: { id: string } }
 ) {
   try {

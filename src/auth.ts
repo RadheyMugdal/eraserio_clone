@@ -16,7 +16,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [Google, GitHub],
   adapter: PrismaAdapter(prisma),
   pages: {
-    signIn: "/signin",
+    signIn: "/login",
+  },
+  events: {
+    async createUser({ user }) {
+      await prisma.workspaces.create({
+        data: {
+          name: "Personal workspace",
+          userId: user.id as string,
+        },
+      });
+    },
   },
   callbacks: {
     authorized: async ({ auth }) => {

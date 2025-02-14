@@ -38,13 +38,25 @@ import Text from "@tiptap/extension-text";
 import TaskList from "@tiptap/extension-task-list";
 import clsx from "clsx";
 import Blockquote from "@tiptap/extension-blockquote";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import TextStyle from "@tiptap/extension-text-style";
 import Underline from "@tiptap/extension-underline";
 import { all, createLowlight } from "lowlight";
+import { useUpdateFileEditorData } from "@/hooks/files/useUpdateFileEditorData";
+import { useParams } from "next/navigation";
 
-const Tiptap = () => {
+interface TiptapProps {
+  textEditorData: string;
+  setTextEditorData: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const Tiptap: React.FC<TiptapProps> = ({
+  textEditorData,
+  setTextEditorData,
+}) => {
+  const id = useParams().id;
   const lowlight = createLowlight(all);
+  const updateFileEditorDataMutation = useUpdateFileEditorData(id as string);
   const [color, setColor] = useState("#FFFFFF");
   const extensions = [
     StarterKit,
@@ -70,7 +82,7 @@ const Tiptap = () => {
       placeholder: "Start writing your notes or document here ...",
     }),
   ];
-  const content = ` `;
+  const content = "";
   const editor = useEditor({
     extensions,
     content,
@@ -82,16 +94,13 @@ const Tiptap = () => {
       },
     },
     onCreate: ({ editor }) => {
+      editor.commands.setContent(textEditorData);
       editor.commands.focus("end");
     },
+    onUpdate: ({ editor }) => {
+      setTextEditorData(editor.getHTML());
+    },
   });
-  useEffect(() => {
-    if (!editor) return;
-    const saveTimeout = setTimeout(() => {
-      console.log(editor.getJSON());
-    }, 5000);
-    return () => clearTimeout(saveTimeout);
-  }, [editor?.getJSON()]);
   editor?.isActive("highlight", { color: "#ffa8a8" });
 
   return (
