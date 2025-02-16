@@ -1,9 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useToast } from "../use-toast";
-export const useRenameFile = (
-  setRenameFileDialog: React.Dispatch<React.SetStateAction<boolean>>
-) => {
+export const useRenameFile = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
   return useMutation({
@@ -21,7 +19,6 @@ export const useRenameFile = (
         description: "Your file has been renamed successfully",
         variant: "default",
       });
-      setRenameFileDialog(false);
     },
     onError: (error) => {
       toast({

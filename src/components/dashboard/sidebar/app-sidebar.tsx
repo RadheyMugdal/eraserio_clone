@@ -14,9 +14,9 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { NavUser } from "./nav-user";
-import { Separator } from "../ui/separator";
+import { Separator } from "@/components/ui/separator";
 import { Progress } from "@/components/ui/progress";
 import { usePathname, useRouter } from "next/navigation";
 import clsx from "clsx";

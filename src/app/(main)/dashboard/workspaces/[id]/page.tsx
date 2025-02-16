@@ -10,7 +10,6 @@ import {
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useGetWorkspaceData } from "@/hooks/workspaces/useGetWorkspaceData";
 import { useParams } from "next/navigation";
-import FileCard from "@/components/dashboard/FileCard";
 
 const page = () => {
   const id = useParams().id;
@@ -57,9 +56,9 @@ const page = () => {
           </Button>
         </div>
         <div className=" grid  grid-cols-[repeat(auto-fill,_minmax(300px,_1fr))] gap-4 ">
-          {data.files.map((file: any) => (
-            <FileCard file={file} />
-          ))}
+          {/* {data.files.map((file: any) => (
+            // <FileCard file={file} />
+          ))} */}
         </div>
       </div>
     </div>

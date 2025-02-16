@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/sidebar";
 
 import { useGetUser } from "@/hooks/user/useGetUser";
-import { Skeleton } from "../ui/skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 import { signOut } from "@/auth";
 
 export function NavUser() {

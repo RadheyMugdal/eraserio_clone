@@ -19,7 +19,7 @@ import { Input } from "../../ui/input";
 import { Button } from "../../ui/button";
 import { WorkspaceResponse } from "@/hooks/workspaces/useGetWorkspaces";
 import { useCreateFile } from "@/hooks/files/useCreateFile";
-import { Plus } from "lucide-react";
+import { Loader2, Plus } from "lucide-react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -79,7 +79,7 @@ const CreateNewFileModal: React.FC<CreateNewFileModalProps> = ({
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-8"
+                className="space-y-6"
               >
                 <FormField
                   control={form.control}
@@ -95,7 +95,7 @@ const CreateNewFileModal: React.FC<CreateNewFileModalProps> = ({
                           <SelectTrigger className="">
                             <SelectValue placeholder="Select workspace" />
                           </SelectTrigger>
-                          <SelectContent className=" max-h-48 overflow-y-scroll">
+                          <SelectContent className=" max-h-48 overflow-y-scroll flex  flex-col gap-4 ">
                             {workspaces.length === 0 && (
                               <div className=" p-2">
                                 <p className=" text-xs italic">
@@ -105,18 +105,22 @@ const CreateNewFileModal: React.FC<CreateNewFileModalProps> = ({
                               </div>
                             )}
                             {workspaces?.map((workspace) => (
-                              <SelectItem value={workspace.id}>
+                              <SelectItem
+                                key={workspace.id}
+                                value={workspace.id}
+                                className=" my-2"
+                              >
                                 {workspace.name}
                               </SelectItem>
                             ))}
-                            <div
-                              className=" text-xs p-2 bg-secondary rounded-md flex items-center justify-center cursor-pointer gap-2"
+                            <button
+                              className=" text-xs w-full p-2 bg-secondary rounded-md flex items-center justify-center cursor-pointer gap-2"
                               onClick={handleCreateNewWorkspace}
                             >
                               {" "}
                               <Plus className=" w-4 h-4" />
                               Create new workspace
-                            </div>
+                            </button>
                           </SelectContent>
                         </Select>
                       </FormControl>
@@ -136,8 +140,19 @@ const CreateNewFileModal: React.FC<CreateNewFileModalProps> = ({
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className=" w-full">
-                  Create new file
+                <Button
+                  type="submit"
+                  className=" w-full"
+                  disabled={createNewfileMutation.isPending}
+                >
+                  {createNewfileMutation.isPending ? (
+                    <>
+                      <Loader2 className=" animate-spin  w-4 h-4" />
+                      Create new file
+                    </>
+                  ) : (
+                    "Create new file"
+                  )}
                 </Button>
               </form>
             </Form>

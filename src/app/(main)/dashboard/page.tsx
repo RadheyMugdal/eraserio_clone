@@ -5,7 +5,6 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import FileCard from "@/components/dashboard/FileCard";
 
 import { useGetRecentFile } from "@/hooks/files/useGetRecentFile";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useState } from "react";
 import { useCreateFile } from "@/hooks/files/useCreateFile";
 import { useGetWorkspaces } from "@/hooks/workspaces/useGetWorkspaces";
@@ -13,20 +12,26 @@ import CreateNewWorkspaceModal from "@/components/dashboard/modals/CreateNewWork
 import CreateNewFileModal from "@/components/dashboard/modals/CreateNewFileModal";
 import RenameFileModal from "@/components/dashboard/modals/RenameFileModal";
 import DeleteFileModal from "@/components/dashboard/modals/DeleteFileModal";
+import { PaginationWithLinks } from "@/components/ui/pagination-with-link";
+import FileCardSkeleton from "@/components/dashboard/skeletons/FileCardSkeleton";
+import { useSearchParams } from "next/navigation";
 
 const page = () => {
+  const page = useSearchParams().get("page") || "1";
+  const pageSize = "16";
   const [filename, setFilename] = useState("");
-  const { data, isLoading } = useGetRecentFile(filename);
+  const { data, isLoading } = useGetRecentFile(filename, page, pageSize);
   const [openCreateNewFileDialog, setOpenCreateNewFileDialog] = useState(false);
   const [openRenameFileDialog, setOpenRenameFileDialog] = useState(false);
   const [openDeleteFileDialog, setOpenDeleteFileDialog] = useState(false);
   const [selectedFileId, setSelectedFileId] = useState<string>("");
+  console.log(data);
+
   const {
     data: workspacesData,
     isLoading: workspacesIsLoading,
     error,
   } = useGetWorkspaces();
-  useGetWorkspaces();
   const [openCreateWorkspaceDialog, setOpenCreateWorkspaceDialog] =
     useState(false);
   const createNewFileMutate = useCreateFile();
@@ -54,7 +59,7 @@ const page = () => {
           <h1>Recent files</h1>
         </div>
       </div>
-      <div className=" flex-1   p-4 space-y-6">
+      <div className=" flex-1 flex flex-col  p-4 space-y-6">
         <div className=" flex w-full justify-between items-center">
           <div className=" w-[25%] relative  bg-secondary rounded-md overflow-hidden ">
             <Search className=" w-4 h-4 absolute top-1/2 left-3 -translate-y-1/2" />
@@ -68,32 +73,20 @@ const page = () => {
               id=""
             />
           </div>
-          <Button onClick={handleCreateNewFile} disabled={!workspacesData}>
+          <Button onClick={handleCreateNewFile}>
             <Plus className=" w-4 h-4" />
             Create new File
           </Button>
         </div>
         {isLoading ? (
-          <div className=" grid  grid-cols-[repeat(auto-fill,_minmax(300px,_1fr))] gap-4  ">
-            <Skeleton className="  h-28  rounded-md " />
-            <Skeleton className="  h-28  rounded-md " />
-            <Skeleton className=" h-28   rounded-md " />
-            <Skeleton className="   h-28  rounded-md" />
-            <Skeleton className=" h-28   rounded-md " />
-            <Skeleton className="   h-28  rounded-md" />
-            <Skeleton className=" h-28   rounded-md " />
-            <Skeleton className="   h-28  rounded-md" />
-            <Skeleton className=" h-28   rounded-md " />
-            <Skeleton className="   h-28  rounded-md" />
-            <Skeleton className=" h-28   rounded-md " />
-            <Skeleton className="   h-28  rounded-md" />
-          </div>
+          <FileCardSkeleton />
         ) : (
-          <div className="w-full h-full ">
-            {data?.length !== 0 ? (
+          <div className=" flex-1 ">
+            {data?.files?.length !== 0 ? (
               <div className=" grid  grid-cols-[repeat(auto-fill,_minmax(300px,_1fr))] gap-4 ">
-                {data?.map((file) => (
+                {data?.files?.map((file: any) => (
                   <FileCard
+                    key={file.id}
                     file={file}
                     handleRenameFile={handleRenameFile}
                     handleDeleteFile={handleDeleteFile}
@@ -114,6 +107,11 @@ const page = () => {
             )}
           </div>
         )}
+        <PaginationWithLinks
+          page={page ? parseInt(page) : 1}
+          pageSize={20}
+          totalCount={data?.totalRecords || 16}
+        />
       </div>
       <CreateNewFileModal
         handleCreateNewWorkspace={handleCreateNewWorkspace}

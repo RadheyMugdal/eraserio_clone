@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import React, { useState } from "react";
 import { useCreateNewWorkspace } from "@/hooks/workspaces/useCreateNewWorkspace";
+import { Loader2 } from "lucide-react";
 
 interface CreateNewWorkspaceModalProps {
   openCreateWorkspaceDialog: boolean;
@@ -40,7 +41,15 @@ const CreateNewWorkspaceModal: React.FC<CreateNewWorkspaceModalProps> = ({
             value={workspaceName}
             onChange={(e) => setWorkspaceName(e.target.value)}
           />
-          <Button onClick={handleCreateNewWorkspace}>Create Workspace</Button>
+          <Button
+            onClick={handleCreateNewWorkspace}
+            disabled={createNewWorkspaceMutation.isPending}
+          >
+            {createNewWorkspaceMutation.isPending && (
+              <Loader2 className=" animate-spin  w-4 h-4" />
+            )}
+            Create Workspace
+          </Button>
         </div>
       </DialogContent>
     </Dialog>

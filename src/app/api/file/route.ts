@@ -5,12 +5,17 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest, res: NextResponse) {
   try {
     const filename = await req.nextUrl.searchParams.get("filename");
+    const page = parseInt(req.nextUrl.searchParams.get("page") || "1");
+    const pageSize = parseInt(req.nextUrl.searchParams.get("pageSize") || "16");
     const session = await auth();
     if (!session?.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-
+    const totalRecords = await prisma.files.count();
     const files = await prisma.files.findMany({
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+
       where: {
         user_id: session.user.id,
         name: {
@@ -19,7 +24,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
       },
     });
 
-    return NextResponse.json({ files }, { status: 200 });
+    return NextResponse.json({ files, totalRecords }, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: error }, { status: 500 });

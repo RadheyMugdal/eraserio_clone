@@ -19,8 +19,6 @@ export const useCreateFile = () => {
       }
       return res.data.files;
     },
-    onSuccess(data, variables, context) {
-      router.push(`/file/${data.id}`);
-    },
+    onSuccess(data, variables, context) {},
   });
 };

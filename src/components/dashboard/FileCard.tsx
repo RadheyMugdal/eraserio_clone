@@ -36,7 +36,12 @@ const FileCard: React.FC<FileCardProps> = ({
         <CardDescription className=" flex items-center justify-between ">
           Updated {lastEdited} ago
           <DropdownMenu>
-            <DropdownMenuTrigger className=" hover:bg-primary rounded-md  hover:text-primary-foreground px-1">
+            <DropdownMenuTrigger
+              className=" hover:bg-primary rounded-md  hover:text-primary-foreground px-1"
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
               <Ellipsis />
             </DropdownMenuTrigger>
             <DropdownMenuContent className=" p-2">
@@ -44,6 +49,7 @@ const FileCard: React.FC<FileCardProps> = ({
                 className=" cursor-pointer   flex items-center "
                 onClick={(e) => {
                   e.stopPropagation();
+
                   handleRenameFile(file.id);
                 }}
               >

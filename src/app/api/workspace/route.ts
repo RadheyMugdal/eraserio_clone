@@ -38,6 +38,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
 export async function GET(req: NextRequest, res: NextResponse) {
   try {
     const name = req.nextUrl.searchParams.get("name");
+    const page = parseInt(req.nextUrl.searchParams.get("page") || "1");
+    const pageSize = parseInt(req.nextUrl.searchParams.get("pageSize") || "16");
     const session = await auth();
     if (!session?.user) {
       return NextResponse.json(
@@ -47,7 +49,17 @@ export async function GET(req: NextRequest, res: NextResponse) {
     }
 
     if (name) {
+      const totalRecords = await prisma.workspaces.count({
+        where: {
+          userId: session.user.id,
+          name: {
+            contains: name as string,
+          },
+        },
+      });
       const workspaces = await prisma.workspaces.findMany({
+        skip: (page - 1) * pageSize,
+        take: pageSize,
         where: {
           userId: session.user.id,
         },
@@ -63,9 +75,16 @@ export async function GET(req: NextRequest, res: NextResponse) {
           },
         },
       });
-      return NextResponse.json({ workspaces }, { status: 200 });
+      return NextResponse.json({ workspaces, totalRecords }, { status: 200 });
     } else {
+      const totalRecords = await prisma.workspaces.count({
+        where: {
+          userId: session.user.id,
+        },
+      });
       const workspaces = await prisma.workspaces.findMany({
+        skip: (page - 1) * pageSize,
+        take: pageSize,
         where: {
           userId: session.user.id,
           name: {
@@ -87,7 +106,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
           },
         },
       });
-      return NextResponse.json({ workspaces }, { status: 200 });
+      return NextResponse.json({ workspaces, totalRecords }, { status: 200 });
     }
   } catch (error) {
     console.error(error);

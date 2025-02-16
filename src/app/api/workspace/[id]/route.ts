@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(
   req: NextRequest,
-  res: NextResponse,
   { params }: { params: { id: string } }
 ) {
   try {
@@ -45,9 +44,13 @@ export async function DELETE(
   }
 }
 
-export async function PATCH(req: NextRequest, res: NextResponse) {
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
-    const { id, name } = await req.json();
+    const { id } = params;
+    const { name } = await req.json();
     if (!id || !name) {
       return NextResponse.json(
         {
@@ -71,7 +74,7 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
     const data = await prisma.workspaces.update({
       where: {
         id,
-        // userId:session.user.id
+        userId: session.user.id,
       },
       data: {
         name,
