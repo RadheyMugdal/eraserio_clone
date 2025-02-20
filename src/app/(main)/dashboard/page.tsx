@@ -75,7 +75,7 @@ const page = () => {
           </div>
           <Button onClick={handleCreateNewFile}>
             <Plus className=" w-4 h-4" />
-            Create new File
+            Create New File
           </Button>
         </div>
         {isLoading ? (
